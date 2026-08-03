@@ -4,7 +4,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/askorn/frontend-assignment"
+    "url": "https://github.com/aksornproject/frontend-assignment"
   },
   "scripts": {
     "build": "turbo run build",
