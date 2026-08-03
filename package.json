@@ -1,10 +1,16 @@
 {
   "name": "frontend-assignment",
-  "private": true,
+  "author": "Nattapong Anuwong <nattapong.anu@askorn.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/askorn/frontend-assignment"
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },

@@ -1,0 +1,3 @@
+[test]
+# Points DATABASE_URL at an in-memory database before any module imports it.
+preload = ["./test/preload.ts"]

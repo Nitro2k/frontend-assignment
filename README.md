@@ -1,159 +1,306 @@
-# Turborepo starter
+# Frontend Assignment
 
-This Turborepo starter is maintained by the Turborepo core team.
+A Turborepo monorepo containing a Next.js storefront and an Elysia + SQLite API
+for a clothing e-commerce site, built against the
+![design](./design.jpg)
+[Figma design](https://www.figma.com/design/oeo29zOYPzlmffBrqugYBD/Frontend-Assignment?node-id=0-1).
 
-## Using this example
+The backend is complete and seeded with 1000 products. The storefront is the
+work to be done.
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
-```
+## The assignment
 
-## What's inside?
+Build the category page from the design. It must satisfy the following.
 
-This Turborepo includes the following packages/apps:
+### 1. Product listing with infinite-scroll pagination
 
-### Apps and Packages
+Products load a page at a time, and the next page is fetched as the user
+scrolls — no numbered pagination, and no "load more" button as the primary
+mechanism. Fetching stops once the catalogue is exhausted.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+Each card renders the product name, image, rating out of 5, and current price.
+Discounted products also show the original price struck through, alongside the
+discount percentage.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### 2. Filtering and search
 
-### Utilities
+Every facet in the design's filter panel, applied together:
 
-This Turborepo has some additional tools already setup for you:
+- **Price** — a range slider from **$0 to $300**
+- **Colors** — multi-select swatches
+- **Size** — multi-select pills
+- **Search** — find products by name
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+Colors and sizes are multi-select: picking more than one **widens** the results,
+while different facets **narrow** them. Load the available colors and sizes from
+the API rather than hardcoding them.
 
-### Build
+Changing a filter resets the list back to the first page.
 
-To build all apps and packages, run the following command:
+### 3. Cart CRUD with a correct price summary
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+Add items to the cart, view it, change quantities, and remove items — with the
+price summary staying consistent with the contents at all times.
 
-```sh
-cd my-turborepo
-turbo build
-```
+The summary covers the number of items, the subtotal at list price, the total
+discount, and the final total to pay.
 
-Without global `turbo`, use your package manager:
+### 4. Checkout
 
-```sh
-cd my-turborepo
-npx turbo build
-bun dlx turbo build
-bun exec turbo build
-```
+Checking out a non-empty cart returns an order id. On success, redirect the user
+to a success page showing that id.
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+Checking out an empty cart fails — surface the error rather than navigating.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+> Checkout is a mock: there is no payment step and no order is stored.
 
-```sh
-turbo build --filter=docs
-```
+---
 
-Without global `turbo`:
+## Frontend stack — bring your own
 
-```sh
-npx turbo build --filter=docs
-bun exec turbo build --filter=docs
-bun exec turbo build --filter=docs
-```
+**We give you an empty Next.js + Tailwind project. Everything else is your
+call.**
 
-### Develop
+What is already in `apps/web`:
 
-To develop all apps and packages, run the following command:
+- Next.js 16 (App Router) and React 19
+- Tailwind CSS v4, wired up and ready
+- TypeScript and ESLint, hooked into the monorepo config
+- One page that says _"Show your potential to the world"_
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+That is the whole starting point. Keep Next.js and Tailwind as the base — beyond
+that, bring whatever you would actually reach for:
 
-```sh
-cd my-turborepo
-turbo dev
-```
+- **Data fetching** — how you talk to the API, cache, and handle loading and
+  error states
+- **State management** — where filter, cart, and UI state lives
+- **Components** — roll your own or reach for a library
+- **Architecture** — how you split features, where logic lives, how you name
+  things
+- **Anything else** — routing patterns, forms, animation, icons, tests, tooling
 
-Without global `turbo`, use your package manager:
+We are deliberately not suggesting libraries. Choosing them is part of the
+exercise.
 
-```sh
-cd my-turborepo
-npx turbo dev
-bun exec turbo dev
-bun exec turbo dev
-```
+Add dependencies with `bun add` from inside `apps/web`.
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+We are not looking for one right answer. We are looking at the decisions you
+make and whether you can stand behind them — so pick the stack and structure you
+would defend in a code review, and tell us why in your submission email.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+The backend is finished; you should not need to change it. If you do, say what
+and why.
 
-```sh
-turbo dev --filter=web
-```
+Let's dance. 🕺
 
-Without global `turbo`:
+---
 
-```sh
-npx turbo dev --filter=web
-bun exec turbo dev --filter=web
-bun exec turbo dev --filter=web
-```
+## Submission
 
-### Remote Caching
+1. **Fork this repository** to your own GitHub account.
+2. Build the storefront on your fork, committing as you go — we like seeing how
+   the work progressed.
+3. Push your work and make sure the repository is accessible to us (public, or
+   private with access granted).
+4. **Reply back to HR's email**
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+In your email, feel free to add anything you would like us to know: trade-offs
+you made, what you would do with more time, or extra setup steps if your
+solution needs more than `bun install` and `bun dev`.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+---
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## Tech stack
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+What ships in the repo. The storefront row is a starting point, not a
+constraint — see [Frontend stack](#frontend-stack--bring-your-own).
 
-```sh
-cd my-turborepo
-turbo login
-```
+|            |                                               |
+| ---------- | --------------------------------------------- |
+| Monorepo   | Turborepo + Bun workspaces                    |
+| Storefront | Next.js 16, React 19, Tailwind CSS v4         |
+| API        | Elysia on Bun                                 |
+| Database   | SQLite via Drizzle ORM (`bun:sqlite`)         |
+| Validation | Zod v4 on both request and response           |
+| Tests      | `bun test` — 129, covering the API and seeder |
 
-Without global `turbo`, use your package manager:
+---
 
-```sh
-cd my-turborepo
-npx turbo login
-bun exec turbo login
-bun exec turbo login
-```
+## Prerequisites
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+- **Bun 1.3.13+** — the package manager and runtime ([install](https://bun.sh))
+- **Node.js 18+** — required by Next.js
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+No database server to install; SQLite is a file.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+---
 
-```sh
-turbo link
-```
-
-Without global `turbo`:
+## Setup
 
 ```sh
-npx turbo link
-bun exec turbo link
-bun exec turbo link
+git clone <repo-url>
+cd frontend-assignment
+bun install
 ```
 
-## Useful Links
+That is the whole setup. The database file, its migrations, and the 1000-product
+seed are all created automatically the first time the API boots.
 
-Learn more about the power of Turborepo:
+Optionally, copy the backend env template — every value has a working default,
+so this is only needed to change one:
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+```sh
+cp packages/backend/.env.example packages/backend/.env
+```
+
+---
+
+## Running
+
+Start everything from the repo root:
+
+```sh
+bun dev
+```
+
+| Service    | URL                     |
+| ---------- | ----------------------- |
+| Storefront | <http://localhost:3000> |
+| API        | <http://localhost:4000> |
+
+On first run the API prints:
+
+```text
+Fresh database at ./sqlite.db — seeding...
+Seeded 1000 products, 10 colors, 9 sizes
+Backend is running at http://localhost:4000
+```
+
+Subsequent runs reuse the existing database and skip seeding.
+
+To run just one side:
+
+```sh
+cd apps/web        && bun dev   # storefront only
+cd packages/backend && bun dev  # API only (watch mode)
+```
+
+Verify the API is up:
+
+```sh
+curl localhost:4000/health
+```
+
+---
+
+## Seed data
+
+Generated deterministically, so every machine gets the same catalogue.
+
+- **1000 products** — names built from the design's vocabulary ("Gradient
+  Graphic", "Skinny Fit", "Loose Fit … Bermuda Shorts")
+- **Prices $50–$300**, discounts of 0/10/20/30/40%, ratings 2.5–5.0
+- **10 colors** — the exact swatch palette from the design
+- **9 sizes** — XX-Small through 4X-Large, matching the filter pills
+- **Images** from [Unsplash](https://unsplash.com/s/photos/product-clothes?orientation=portrait),
+  served at the cards' 3:4 crop (600×800)
+
+Colors are spread 100 products each and sizes ~111 each, so every swatch and
+pill returns results.
+
+> The price filter spans $0–$300 as specified, but no seeded product is priced
+> below $50 — the design's own cards start at $80. Narrowing the slider's upper
+> bound below $50 legitimately returns an empty list.
+
+---
+
+## Database tasks
+
+Run from `packages/backend`:
+
+| Command               |                                                        |
+| --------------------- | ------------------------------------------------------ |
+| `bun run db:studio`   | Browse and edit data at <https://local.drizzle.studio> |
+| `bun run db:seed`     | Migrate and seed if empty (no-op otherwise)            |
+| `bun run db:reset`    | Delete the database and rebuild it from scratch        |
+| `bun run db:generate` | Generate a migration after editing `src/db/schema.ts`  |
+| `bun run db:migrate`  | Apply pending migrations                               |
+
+---
+
+## Tests
+
+```sh
+bun test                      # from the repo root, via turbo
+cd packages/backend && bun test
+```
+
+129 tests covering every endpoint, all filter combinations, cart arithmetic,
+checkout, and the seeder. They drive the real Elysia app in-process against an
+in-memory database, so the full stack — routing, validation, handlers — runs
+exactly as it would over the network. No server or port needed.
+
+---
+
+## Other commands
+
+Run from the repo root:
+
+| Command               |                                |
+| --------------------- | ------------------------------ |
+| `bun dev`             | Start storefront and API       |
+| `bun run build`       | Production build               |
+| `bun run lint`        | ESLint across all packages     |
+| `bun run check-types` | TypeScript across all packages |
+| `bun run format`      | Prettier                       |
+
+---
+
+## Project structure
+
+```text
+apps/
+  web/                     Next.js storefront (port 3000)
+    app/                   App Router pages
+    lib/eden.ts            typed API client
+packages/
+  backend/                 Elysia API (port 4000)
+    src/
+      app.ts               route graph (no port binding — used by tests)
+      index.ts             bootstrap: migrate, seed, listen
+      common/              errors, HTTP mapping, id generation, shared schemas
+      db/                  drizzle schema, migrations, seeder
+      domains/             one folder per domain
+        products/          products.repo · .biz · .service · .router · .schema
+        colors/
+        sizes/
+        cart/
+    test/                  bun test suites
+    drizzle/               generated SQL migrations
+  eslint-config/
+  typescript-config/
+```
+
+Each domain is layered:
+
+| Layer      | File           | Responsibility                                |
+| ---------- | -------------- | --------------------------------------------- |
+| Repository | `*.repo.ts`    | Database queries only, no rules               |
+| Business   | `*.biz.ts`     | Rules, invariants, cross-domain orchestration |
+| Controller | `*.service.ts` | Maps results and domain errors to HTTP        |
+| Route      | `*.router.ts`  | HTTP surface, request and response schemas    |
+
+---
+
+## Environment variables
+
+Defined in `packages/backend/.env.example`; all optional.
+
+| Variable              | Default                 |                                             |
+| --------------------- | ----------------------- | ------------------------------------------- |
+| `PORT`                | `4000`                  | API port                                    |
+| `WEB_ORIGIN`          | `http://localhost:3000` | CORS allow-origin                           |
+| `DATABASE_URL`        | `./sqlite.db`           | SQLite file; `:memory:` for throwaway       |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:4000` | Set in `apps/web` — where the client points |
