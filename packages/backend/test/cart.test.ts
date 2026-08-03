@@ -240,16 +240,31 @@ describe("POST /cart/checkout", () => {
   test("each checkout mints a fresh order id", async () => {
     await api("POST", "/cart/items", { productId: "tee" });
     const first = await api("POST", "/cart/checkout");
+
+    // Checkout empties the cart, so it has to be refilled to check out again.
+    await api("POST", "/cart/items", { productId: "tee" });
     const second = await api("POST", "/cart/checkout");
 
+    expect(first.body.orderId).toMatch(UUID_V7);
+    expect(second.body.orderId).toMatch(UUID_V7);
     expect(first.body.orderId).not.toBe(second.body.orderId);
   });
 
-  test("the cart survives checkout — it is a mock, with no side effects", async () => {
+  test("checkout empties the cart", async () => {
     await api("POST", "/cart/items", { productId: "tee", quantity: 2 });
     await api("POST", "/cart/checkout");
 
-    expect((await api("GET", "/cart")).body.totalItems).toBe(2);
+    const cart = await api("GET", "/cart");
+    expect(cart.body.totalItems).toBe(0);
+    expect(cart.body.items).toEqual([]);
+    expect(cart.body.total).toBe(0);
+  });
+
+  test("a second checkout straight after is a 409", async () => {
+    await api("POST", "/cart/items", { productId: "tee" });
+    await api("POST", "/cart/checkout");
+
+    expect((await api("POST", "/cart/checkout")).status).toBe(409);
   });
 
   test("checkout fails again once the cart is cleared", async () => {

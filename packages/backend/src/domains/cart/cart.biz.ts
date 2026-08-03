@@ -123,8 +123,8 @@ export const cartBiz = {
 
   /**
    * Mock checkout. There is no order table and no payment step — a non-empty
-   * cart simply mints an order id. The cart is deliberately left intact so the
-   * call can be repeated during development.
+   * cart mints an order id and is then emptied, so the shopper lands back on a
+   * clean cart the way a real checkout would leave them.
    */
   async checkout(): Promise<{ orderId: string }> {
     const items = await cartRepo.findAll();
