@@ -12,7 +12,7 @@ export function CartBadge() {
     <Link href="/cart" aria-label="View cart" className="relative">
       <ShoppingCart className="size-6" />
       {totalItems > 0 && (
-        <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-black text-[10px] font-medium text-white">
+        <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-medium text-white">
           {totalItems > 99 ? "99+" : totalItems}
         </span>
       )}
